@@ -1,0 +1,13 @@
+name = "nick-usaco-ai-tutor-api"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "nick-usaco-tutor-db"
+database_id = "REPLACE_AFTER_D1_CREATION"
+
+[vars]
+OPENAI_MODEL = "gpt-5-mini"
+ALLOWED_ORIGIN = "http://localhost:8000"
+EVALUATOR_VERSION = "usaco-v0.1"

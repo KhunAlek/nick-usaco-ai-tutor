@@ -1,0 +1,16 @@
+:root { font-family: Inter, system-ui, sans-serif; color: #13213a; background: #eef3f8; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+.shell { width: min(900px, calc(100% - 28px)); margin: 0 auto; padding: 36px 0 64px; }
+.hero { margin-bottom: 24px; }
+.eyebrow { margin: 0 0 8px; font-size: .78rem; font-weight: 800; letter-spacing: .12em; color: #52657a; }
+h1, h2, h3 { line-height: 1.15; }
+h1 { margin: 0 0 10px; font-size: clamp(2rem, 7vw, 4.5rem); }
+.status { display: inline-block; padding: 8px 12px; border-radius: 999px; background: #dce8f4; font-weight: 700; }
+.card { background: white; border-radius: 18px; padding: 24px; margin: 18px 0; box-shadow: 0 10px 30px rgba(24, 44, 73, .08); }
+label { display: grid; gap: 8px; margin: 16px 0; font-weight: 700; }
+textarea { width: 100%; padding: 12px; border: 1px solid #bcc9d6; border-radius: 10px; font: inherit; resize: vertical; }
+button { border: 0; border-radius: 10px; padding: 13px 18px; background: #173f70; color: white; font: inherit; font-weight: 800; cursor: pointer; }
+button:disabled { opacity: .6; cursor: wait; }
+#support-lesson { margin-top: 18px; padding: 16px; border-left: 5px solid #173f70; background: #f4f8fb; }
+pre { overflow-x: auto; padding: 14px; background: #f4f6f8; border-radius: 10px; }

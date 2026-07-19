@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nick USACO AI Tutor</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">NICK // USACO PREP</p>
+      <h1>Today’s learning day</h1>
+      <p id="day-status" class="status">Loading…</p>
+    </header>
+
+    <section class="card" id="lesson-card">
+      <p class="eyebrow">TODAY’S LESSON</p>
+      <h2 id="lesson-title">Loading lesson…</h2>
+      <div id="lesson-body"></div>
+    </section>
+
+    <section class="card">
+      <p class="eyebrow">SUBMIT YOUR WORK</p>
+      <form id="submission-form">
+        <label>Python code
+          <textarea id="code" rows="14" required spellcheck="false"></textarea>
+        </label>
+        <label>Your explanation
+          <textarea id="explanation" rows="5" required></textarea>
+        </label>
+        <label>Tests you ran
+          <textarea id="tests" rows="4" required></textarea>
+        </label>
+        <label>Judge result or evidence
+          <textarea id="judge-evidence" rows="4" required></textarea>
+        </label>
+        <button type="submit">Send to AI teacher</button>
+        <p id="form-message" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="card" id="review-card" hidden>
+      <p class="eyebrow">AI REVIEW</p>
+      <h2 id="review-headline"></h2>
+      <p id="review-explanation"></p>
+      <h3>Next action</h3>
+      <p id="review-next-action"></p>
+      <div id="support-lesson" hidden></div>
+    </section>
+  </main>
+  <script src="assets/app.js"></script>
+</body>
+</html>
