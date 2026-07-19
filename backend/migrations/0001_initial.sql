@@ -55,17 +55,72 @@ CREATE TABLE learner_history (
   created_at TEXT NOT NULL
 );
 
-INSERT INTO lessons(id,lesson_type,title,instructions,required_evidence_json,source_lesson_id,scheduled_date,created_at)
-VALUES(
-  'bootstrap-next-lesson',
-  'NORMAL',
-  'Next two-pointer transfer lesson',
-  'Read the complete problem, state the technique and why before coding, then solve independently. This placeholder must be replaced by the verified next lesson selected from Nick’s current learning record.',
-  '["Python code","Technique and reasoning before code","Tests run","Judge result"]',
-  NULL,
-  date('now'),
-  datetime('now')
+CREATE TABLE learner_state (
+  learner_id TEXT PRIMARY KEY,
+  last_valid_completed_session INTEGER NOT NULL,
+  last_valid_lesson_id TEXT NOT NULL,
+  current_lesson_id TEXT,
+  learner_status TEXT NOT NULL CHECK (learner_status IN ('WAITING_FOR_LESSON','LESSON_OPEN')),
+  target_skill_id TEXT NOT NULL,
+  maximum_next_stage TEXT NOT NULL,
+  notes_json TEXT NOT NULL,
+  updated_at TEXT NOT NULL
 );
 
-INSERT INTO learning_days(id,learner_id,learning_date,lesson_id,status,outcome,created_at)
-VALUES('bootstrap-day','nick',date('now'),'bootstrap-next-lesson','OPEN',NULL,datetime('now'));
+CREATE TABLE invalidated_lessons (
+  lesson_id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  invalidated_on TEXT NOT NULL,
+  failure_classes_json TEXT NOT NULL,
+  student_responsibility TEXT NOT NULL,
+  blocked_from_reuse INTEGER NOT NULL CHECK (blocked_from_reuse IN (0,1)),
+  reason_json TEXT NOT NULL
+);
+
+INSERT INTO learner_state(
+  learner_id,last_valid_completed_session,last_valid_lesson_id,current_lesson_id,
+  learner_status,target_skill_id,maximum_next_stage,notes_json,updated_at
+) VALUES(
+  'nick',
+  10,
+  'S10-reactor-pairing',
+  NULL,
+  'WAITING_FOR_LESSON',
+  'sorting_opposite_end_two_pointer_reconstruction',
+  'REBUILD',
+  '{"session_10_credit":"full","session_10_solution":"Counter frequency counting","independence_rating":3,"expected_two_pointer_rebuild_verified":false,"repair_required":false,"retest_required":false,"next_lesson_authorized":false}',
+  '2026-07-18T00:00:00Z'
+);
+
+INSERT INTO invalidated_lessons(
+  lesson_id,title,invalidated_on,failure_classes_json,student_responsibility,blocked_from_reuse,reason_json
+) VALUES(
+  'S11-sum-of-three-values',
+  'The Three-Signal Search / Sum of Three Values',
+  '2026-07-16',
+  '["D","E"]',
+  'none',
+  1,
+  '["Advanced to Recognise without verified reconstruction","Introduced an untaught composite three-value model","Material and workflow failure caused frustration","Withdrawn evidence cannot affect progress"]'
+);
+
+INSERT INTO learner_history(id,learner_id,event_type,lesson_id,learning_day_id,details_json,created_at)
+VALUES
+  (
+    'history-session-10-completed',
+    'nick',
+    'SESSION_COMPLETED',
+    'S10-reactor-pairing',
+    NULL,
+    '{"session_number":10,"student_credit":"full","correctness":"verified_correct","solution_technique":"Counter frequency counting","expected_technique":"sorting plus opposite-end two pointers","expected_technique_demonstrated":false,"independence_rating":3,"repair_required":false,"retest_required":false}',
+    '2026-07-15T00:00:00Z'
+  ),
+  (
+    'history-session-11-invalidated',
+    'nick',
+    'LESSON_INVALIDATED',
+    'S11-sum-of-three-values',
+    NULL,
+    '{"student_responsibility":"none","student_penalty_allowed":false,"can_affect_progress":false,"blocked_from_reuse":true}',
+    '2026-07-16T00:00:00Z'
+  );
