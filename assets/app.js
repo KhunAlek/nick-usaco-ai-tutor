@@ -3,6 +3,7 @@
 
   const API = window.USACO_TUTOR_API || "http://localhost:8787";
   const form = document.getElementById("submission-form");
+  const submitCard = form.closest("section");
   let currentLesson = null;
 
   async function request(path, options = {}) {
@@ -15,8 +16,22 @@
     return data;
   }
 
-  function renderLesson(day) {
+  function renderToday(day) {
+    if (!day.lesson) {
+      currentLesson = null;
+      document.getElementById("day-status").textContent = "Waiting for the next verified lesson";
+      document.getElementById("lesson-title").textContent = "Current learning position";
+      document.getElementById("lesson-body").innerHTML = `
+        <p>${escapeHtml(day.message)}</p>
+        <p><strong>Last valid completed session:</strong> ${escapeHtml(day.current_position.last_valid_completed_session)}</p>
+        <p><strong>Current target:</strong> rebuild sorting plus opposite-end two pointers independently.</p>
+        <p><strong>Maximum next stage:</strong> ${escapeHtml(day.current_position.maximum_next_stage)}</p>`;
+      submitCard.hidden = true;
+      return;
+    }
+
     currentLesson = day.lesson;
+    submitCard.hidden = false;
     document.getElementById("day-status").textContent = day.day_status === "OPEN" ? "Learning day open" : "Learning day complete";
     document.getElementById("lesson-title").textContent = day.lesson.title;
     document.getElementById("lesson-body").innerHTML = `<p>${escapeHtml(day.lesson.instructions)}</p><p><strong>Required evidence:</strong> ${day.lesson.required_evidence.map(escapeHtml).join(", ")}</p>`;
@@ -44,6 +59,7 @@
 
   form.addEventListener("submit", async event => {
     event.preventDefault();
+    if (!currentLesson) return;
     const button = form.querySelector("button");
     const message = document.getElementById("form-message");
     button.disabled = true;
@@ -68,8 +84,9 @@
     }
   });
 
-  request("/api/today").then(renderLesson).catch(error => {
-    document.getElementById("day-status").textContent = "Could not load today’s lesson";
+  request("/api/today").then(renderToday).catch(error => {
+    document.getElementById("day-status").textContent = "Could not load the learning state";
     document.getElementById("lesson-body").textContent = error.message;
+    submitCard.hidden = true;
   });
 })();
